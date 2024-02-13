@@ -529,34 +529,34 @@
 //    renderComponent('Bearer ory_at_9y5mVYfbnvdRxv8BuHD4r1GGXvjEiBFV0_owK25qVh0.9Mkd1c7HZiQEEaPRrqvkUV3aLmGffNDWJH5nEa1jDDo', [[LatestTradesNFTToken, '#LatestTradesNFTToken']], 'Latest-Trades-of-NFT-Tokens-in-Network_2', variables, 'Mempool-Subscription-Latest-Trades-of-NFT-Tokens-in-Network_2');
 // })
 
-const nfts = ["$WORLDBUILDERS", " nft"]
+// const nfts = ["$WORLDBUILDERS", " nft"]
 
 
-const axios = require('axios');
-let data = JSON.stringify({
-   "query": "query ($network: evm_network, $limit: Int!, $offset: Int!, $from: String, $till: String) {\n  EVM(dataset: combined, network: $network) {\n    DEXTrades(\n      orderBy: {descendingByField: \"count\"}\n      limit: {offset: $offset, count: $limit}\n      where: {Block: {Date: {since: $from, till: $till}}, Trade: {Buy: {Currency: {Fungible: false}}, Sell: {Currency: {Fungible: true}}}}\n    ) {\n      Trade {\n        Dex {\n          ProtocolName\n          ProtocolFamily\n          ProtocolVersion\n        }\n      }\n      nfts: uniq(of: Trade_Buy_Currency_SmartContract, method: approximate)\n      currencies: uniq(of: Trade_Sell_Currency_SmartContract, method: approximate)\n      buyers: uniq(of: Trade_Buy_Buyer, method: approximate)\n      count\n      ChainId\n    }\n  }\n}\n",
-   "variables": "{\"network\":\"eth\",\"limit\":10,\"offset\":0,\"from\":\"2024-02-04\",\"till\":\"2024-02-11\",\"mempool\":false,\"dateFormat\":\"%Y-%m-%d\",\"date_middle\":\"2024-02-07\"}"
-});
+// const axios = require('axios');
+// let data = JSON.stringify({
+//    "query": "query ($network: evm_network, $limit: Int!, $offset: Int!, $from: String, $till: String) {\n  EVM(dataset: combined, network: $network) {\n    DEXTrades(\n      orderBy: {descendingByField: \"count\"}\n      limit: {offset: $offset, count: $limit}\n      where: {Block: {Date: {since: $from, till: $till}}, Trade: {Buy: {Currency: {Fungible: false}}, Sell: {Currency: {Fungible: true}}}}\n    ) {\n      Trade {\n        Dex {\n          ProtocolName\n          ProtocolFamily\n          ProtocolVersion\n        }\n      }\n      nfts: uniq(of: Trade_Buy_Currency_SmartContract, method: approximate)\n      currencies: uniq(of: Trade_Sell_Currency_SmartContract, method: approximate)\n      buyers: uniq(of: Trade_Buy_Buyer, method: approximate)\n      count\n      ChainId\n    }\n  }\n}\n",
+//    "variables": "{\"network\":\"eth\",\"limit\":10,\"offset\":0,\"from\":\"2024-02-04\",\"till\":\"2024-02-11\",\"mempool\":false,\"dateFormat\":\"%Y-%m-%d\",\"date_middle\":\"2024-02-07\"}"
+// });
 
-let config = {
-   method: 'post',
-   maxBodyLength: Infinity,
-   url: 'https://streaming.bitquery.io/graphql',
-   headers: { 
-      'Content-Type': 'application/json', 
-      'X-API-KEY': 'BQYNznjwTSh2pusiKDsecIeGuknrGbGJ', 
-      'Authorization': 'Bearer ory_at_KZ8oYrVJe4nKWsk6w_wQsbIq3Az-wZZJHaMYGNmCg9Q.TkxORVaaojYjWhaPmumXUIwtA0lCmeRP2DZLYPRrj3g'
-   },
-   data : data
-};
+// let config = {
+//    method: 'post',
+//    maxBodyLength: Infinity,
+//    url: 'https://streaming.bitquery.io/graphql',
+//    headers: { 
+//       'Content-Type': 'application/json', 
+//       'X-API-KEY': 'BQYNznjwTSh2pusiKDsecIeGuknrGbGJ', 
+//       'Authorization': 'Bearer ory_at_KZ8oYrVJe4nKWsk6w_wQsbIq3Az-wZZJHaMYGNmCg9Q.TkxORVaaojYjWhaPmumXUIwtA0lCmeRP2DZLYPRrj3g'
+//    },
+//    data : data
+// };
 
-axios.request(config)
-.then((response) => {
-   console.log(JSON.stringify(response.data));
-})
-.catch((error) => {
-   console.log(error);
-});
+// axios.request(config)
+// .then((response) => {
+//    console.log(JSON.stringify(response.data));
+// })
+// .catch((error) => {
+//    console.log(error);
+// });
 
 
 // const axios = require('axios');
@@ -585,3 +585,16 @@ axios.request(config)
 // .catch((error) => {
 //    console.log(error);
 // });
+
+
+'use strict';
+
+const express = require('express');
+
+const app = express();
+const port = 3000;
+
+app.listen(port, () => console.log(`Listening on port ${port}`)); 
+
+app.use(express.static('public'));
+app.use('/api', require('./routes/index'));
